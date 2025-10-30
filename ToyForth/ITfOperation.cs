@@ -1,16 +1,16 @@
 ﻿namespace ToyForth;
 public interface ITfOperation
 {
-    void Exec(Stack<Object> callStack);
+    void Exec(Stack<object> callStack);
 }
 public sealed record Sum : ITfOperation
 {
-    public void Exec(Stack<Object> callStack)
+    public void Exec(Stack<object> callStack)
     {
         if (callStack is null || callStack.Count < 2) throw new InvalidOperationException();
 
-        (Object a, Object b) = (callStack.Pop(), callStack.Pop()); 
-        Object res = (b, a) switch
+        (object a, object b) = (callStack.Pop(), callStack.Pop()); 
+        object res = (b, a) switch
         {
             (string s1, string s2) => s1 + s2,
             (string s, int i) => s + i,
@@ -25,10 +25,10 @@ public sealed record Sum : ITfOperation
 
 public sealed record Dup() : ITfOperation
 {
-    public void Exec(Stack<Object> callStack)
+    public void Exec(Stack<object> callStack)
     {
         if (callStack is null || callStack.Count == 0) throw new InvalidOperationException();
-        Object res = callStack.Pop() switch
+        object res = callStack.Pop() switch
         {
             string s1 => s1 + s1,
             int i => i * 2,
@@ -38,12 +38,7 @@ public sealed record Dup() : ITfOperation
     }        
 }
 
-public class TfProgram(IEnumerable<ITfOperation> ops)
+public sealed record Push(object Value) : ITfOperation
 {
-    public IEnumerable<ITfOperation> Operations { get; } = ops;
-
-    public void Exec(Stack<Object> callStack)
-    {
-       foreach (ITfOperation op in Operations) op.Exec(callStack);
-    }
+    public void Exec(Stack<object> callStack) => callStack.Push(Value);
 }
