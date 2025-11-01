@@ -1,4 +1,5 @@
 ﻿using ToyForth;
+var parsed = new TfProgram(TfParser.ParseInput("10 20 sum dup -60 sum"));
 
 var program = new TfProgram(
 [
@@ -20,10 +21,11 @@ var program2 = new TfProgram(
     new Sum()
 ]);
 
-var stack = new Stack<object>();
-var stack2 = new Stack<object>();
-program.Exec(stack);
-program2.Exec(stack2);
 
-Console.WriteLine(stack.Peek());
-Console.WriteLine(stack2.Peek());
+program.Exec();
+program2.Exec();
+parsed.Exec();
+
+Console.WriteLine(program.ProgramResult + ", " + parsed.ProgramResult);
+Console.WriteLine(program2.ProgramResult);
+
