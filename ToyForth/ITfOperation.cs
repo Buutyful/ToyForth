@@ -37,6 +37,13 @@ public sealed record Dup() : ITfOperation
         callStack.Push(res);
     }        
 }
+public sealed record Sequence(IEnumerable<ITfOperation> Operations) : ITfOperation
+{
+    public void Exec(Stack<object> callStack)
+    {
+        foreach (ITfOperation op in Operations) op.Exec(callStack);
+    }
+}
 
 public sealed record Push(object Value) : ITfOperation
 {

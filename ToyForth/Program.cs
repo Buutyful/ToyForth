@@ -1,5 +1,12 @@
 ﻿using ToyForth;
-var parsed = new TfProgram(TfParser.ParseInput("10 20 sum dup -60 sum"));
+
+string[] inputs =
+    [
+        "10 20 sum dup -60 sum",
+        "10 [ 10 10 sum ] dup sum",
+        "3 [ 5 [ 2 dup sum ] sum ] dup"
+    ];
+var parsed = new TfProgram(TfParser.ParseInput(inputs[2]));
 
 var program = new TfProgram(
 [
