@@ -45,6 +45,54 @@ public sealed record Sequence(IEnumerable<ITfOperation> Operations) : ITfOperati
     }
 }
 
+public sealed record If() : ITfOperation
+{
+    public void Exec(Stack<object> stack)
+    {
+        if (stack.Count < 3)
+            throw new InvalidOperationException("[condition] [then] [else]");
+
+        var elseOpResult = stack.Pop();
+        var thenOpResult = stack.Pop();
+        var condition = stack.Pop();
+
+        bool cond = condition switch
+        {
+            bool b => b,
+            _ => throw new InvalidOperationException("A boolean condition before the sequences when if operation")
+        };
+
+        var chosen = cond ? thenOpResult : elseOpResult;
+        stack.Push(chosen);
+    }
+}
+
+public sealed record Condition(string Operator) : ITfOperation
+{
+    public void Exec(Stack<object> stack)
+    {
+        if (stack.Count < 2)
+            throw new InvalidOperationException("Condition needs two values on the stack");
+
+        var o2 = stack.Pop();
+        var o1 = stack.Pop();
+
+        if (o1 is not int i1 || o2 is not int i2)
+            throw new NotSupportedException("Condition operators only support ints");
+
+        bool result = Operator switch
+        {
+            ">" => i1 > i2,
+            "<" => i1 < i2,
+            "==" => i1 == i2,
+            _ => throw new NotSupportedException()
+        };
+
+        stack.Push(result);
+    }
+}
+
+
 public sealed record Push(object Value) : ITfOperation
 {
     public void Exec(Stack<object> callStack) => callStack.Push(Value);

@@ -9,6 +9,6 @@ public class TfProgram(IEnumerable<ITfOperation> ops)
 
     public void Exec()
     {
-       foreach (ITfOperation op in Operations) op.Exec(_stack);
+        foreach (ITfOperation op in Operations) op.Exec(_stack);
     }
 }

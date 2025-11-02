@@ -1,38 +1,24 @@
 ﻿using ToyForth;
 
 string[] inputs =
-    [
-        "10 20 sum dup -60 sum",
-        "10 [ 10 10 sum ] dup sum",
-        "3 [ 5 [ 2 dup sum ] sum ] dup"
-    ];
-var parsed = new TfProgram(TfParser.ParseInput(inputs[2]));
-
-var program = new TfProgram(
 [
-    new Push(10),
-    new Push(20),
-    new Sum(),
-    new Dup(),
-    new Push(-60),
-    new Sum()
-]);
-
-var program2 = new TfProgram(
-[
-    new Push("Hello"),
-    new Push("World!"),
-    new Sum(),
-    new Dup(),
-    new Push(2025),
-    new Sum()
-]);
+    "10 20 sum dup -60 sum",                     // 0
+    "10 [ 10 10 sum ] dup sum",                  // 50
+    "3 [ 5 [ 2 dup sum ] sum ] dup",             // 24
+    "10 5 > [ \"greater\" ] [ \"smaller\" ] if", // greater
+    "3 3 == [ 100 ] [ -100 ] if",                // 100
+    "Hi there sum",                     // "Hi there"
+    "Yo dup",                                // "YoYo"
+    "A B sum C sum",                 // "ABC"
+    "5 10 < [ 3 3 == [ true1 ] [ false ] if ] [ true2 ] if", //true1
+    "1 2 > [ 5 5 sum ] [ 10 10 sum dup ] if",               // 40
+];
 
 
-program.Exec();
-program2.Exec();
-parsed.Exec();
-
-Console.WriteLine(program.ProgramResult + ", " + parsed.ProgramResult);
-Console.WriteLine(program2.ProgramResult);
+foreach (var input in inputs)
+{
+    var program = new TfProgram(TfParser.ParseInput(input));
+    program.Exec();
+    Console.WriteLine(program.ProgramResult);
+}
 
