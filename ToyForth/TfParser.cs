@@ -32,10 +32,10 @@ public static class TfParser
                             var subTokens = tokens[(index + 1)..(j - 1)];
                             var subInput = string.Join(" ", subTokens);
 
-                            // recursively parse nested list
+                            // nested sequences parsed recursivly 
                             yield return new Sequence(ParseInput(subInput));
 
-                            index = j - 1; // jump ahead
+                            index = j - 1;
                         }
                         break;
                     default: yield return new Push(word); break;
